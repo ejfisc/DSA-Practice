@@ -7,6 +7,7 @@ def find_fixed_point(nums):
     low = 0
     high = len(nums) - 1
     mid = 0
+    # in place binary search to avoid recursion
     while low <= high:
         mid = (high + low) // 2
         if nums[mid] < mid:
