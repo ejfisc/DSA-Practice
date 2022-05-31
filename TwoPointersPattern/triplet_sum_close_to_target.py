@@ -6,7 +6,6 @@ from math import inf
 
 def find_triplet(arr, target):
     smallestDifference = inf
-    closestSum = inf
     # sort the array
     arr.sort()
 
