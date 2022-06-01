@@ -2,32 +2,29 @@
 # Given an array with positive numbers and a positive target number, find all of its contiguous subarrays whose
 # product is less than the target number. 
 
+from collections import deque
+
 def find_subarrays(arr, target):
-    subarrays = []
-    windowStart = 0
-
-    # This problem follows sliding window and two pointers pattern
-    # we will use a sliding window to iterate through the array
-    # for each window, use two pointer to calculate the product of the subarray
-    for windowEnd in range(len(arr)):
-        product = 0
-        left, right = windowStart, windowEnd
-        while left < right:
-            product += arr[left] * arr[right]
+    result = []
+    product = 1
+    left = 0
+    # this problem uses sliding window and two pointer
+    # this main for loop manages the sliding window
+    for right in range(len(arr)):
+        product *= arr[right]
+        # shrink the window
+        while product >= target and left < len(arr):
+            product /= arr[left]
             left += 1
-            right -= 1
-        # if the window is 1 element long and that element is less than target, add it to the list
-        if windowStart == windowEnd and arr[windowStart] < target:
-            subarrays.append([arr[windowStart]])
-        # if the product of the window is less than the target, add it to the list
-        if product < target:
-            subarrays.append([arr[windowStart:windowEnd]])
-        elif product > target:
-            # move the window forward
-            windowStart += 1
-
-    return subarrays
-            
+        # since the product of all numbers from left to right is less than the target
+        # therefore, all subarrays from left to right will have a product less than the
+        # target too; to avoid duplicates, we will start with a subarray containing only
+        # arr[right] and then extend it
+        subarray = deque()
+        for i in range(right, left-1, -1):
+            subarray.appendleft(arr[i])
+            result.append(list(subarray))
+    return result
 
             
 
